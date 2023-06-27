@@ -309,13 +309,13 @@ if __name__ == '__main__':
     
     batch_size = 1024*72 #actual batch size
    
-    dtbatch_size =  30 # number of time steps loaded at once (use 2-3 to avoid overfitting)
-    epochs_per_dtbatch =  1000# number of epochs before loading new training files
-    dtbatch_size_val =  2 # number of time steps loaded at once
-    epochs_per_dtbatch_val = 1000 # number of epochs before loading new validation files
+    dtbatch_size =  3 # number of time steps loaded at once (use 2-3 to avoid overfitting)
+    epochs_per_dtbatch =  5# number of epochs before loading new training files
+    dtbatch_size_val =  1 # number of time steps loaded at once
+    epochs_per_dtbatch_val = 10 # number of epochs before loading new validation files
     nepochs = 1000
     ndts_train = 200
-    ndts_val  = 20
+    ndts_val  = 200
     ndts_test =  20 
     train_model = True
      
