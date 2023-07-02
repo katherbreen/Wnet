@@ -232,7 +232,7 @@ def get_data():
         feat_in =  feat_in.unify_chunks()
         
         ######Augment the cirrus/convective data
-        repeat_aug = 7
+        repeat_aug = 4
         aug_lst = []  # list of sites to augment
         if site in aug_lst:
           for i in range(repeat_aug):
@@ -403,12 +403,12 @@ if __name__ == '__main__':
     strategy = tf.distribute.MirroredStrategy()
     
     mod_name = 'GAN_singlelev'
-    nepochs = 750
+    nepochs = 500
     hp = {
-        'latent_dim': 16,
+        'latent_dim': 8,
         'num_t_critic': 1, 
         'lr': 1e-5,
-        'batch_size': 2048,
+        'batch_size': 1024,
         'wh' :  0.0, 
         'n_features' : 14, 
         'Nlayers': 1,
