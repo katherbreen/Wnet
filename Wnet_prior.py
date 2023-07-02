@@ -199,14 +199,15 @@ class get_dts():
         Xall = self.dat_in
         levs = Xall.coords['lev'].values
         nlev =  len(levs)
-
+	
+	   #concatenate surface variables
         for v in self.surf_vars:        
             vv =     Xall[v]
             Xs =  vv.sel(lev=[71]) #level 1 above surface
             Xsfc =  Xs
             v2 =  v + "_sfc"
             for l in range(nlev-1):         
-                Xsfc = xr.concat([Xsfc, Xs], dim ='lev') #there must be a better, pythonic way to do this                  
+                Xsfc = xr.concat([Xsfc, Xs], dim ='lev')                 
             Xsfc =  Xsfc.assign_coords(lev=levs)
             Xall[v2] =  Xsfc
             
@@ -265,7 +266,7 @@ class DaskGenerator(Sequence):
      
         def __getitem__(self, idx):
                     
-            '''Extract and compute a single batch returned as (X, y)'''
+            '''Extract and compute a single chunk returned as (X, y). This is also a minibatch'''
             X, y = da.compute(self.sample_batches[idx, 0], self.class_batches[idx])
             X = np.asarray(X).squeeze()
             y = np.asarray(y).squeeze()
@@ -307,14 +308,14 @@ if __name__ == '__main__':
     model_name =  "MLP_cr" 
     hp['hidden_layer_sizes'] = (hp['Nnodes'],)*hp['Nlayers']
     
-    batch_size = 1024*72 #actual batch size
+    batch_size = 256*72 #actual batch size
    
     dtbatch_size =  3 # number of time steps loaded at once (use 2-3 to avoid overfitting)
     epochs_per_dtbatch =  5# number of epochs before loading new training files
     dtbatch_size_val =  1 # number of time steps loaded at once
     epochs_per_dtbatch_val = 10 # number of epochs before loading new validation files
     nepochs = 1000
-    ndts_train = 200
+    ndts_train = 200 #number of files to choose from 
     ndts_val  = 200
     ndts_test =  20 
     train_model = True
