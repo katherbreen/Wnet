@@ -1,5 +1,7 @@
 # Wnet
 
+GEOS software: https://github.com/GEOS-ESM/GEOSgcm
+
 Data availability:
 <ul>
 <li>GEOS-5 Nature Run: https://gmao.gsfc.nasa.gov/global_mesoscale/7km-G5NR/data_access/
