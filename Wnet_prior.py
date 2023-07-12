@@ -1,7 +1,7 @@
 #######################################################################
 # NASA GSFC Global Modeling and Assimilation Office (GMAO), Code 610.1
 # code developed by Donifan Barahona and Katherine Breen
-# last edited: 06.2023
+# last edited: 07.2023
 # purpose: train/validate/test Wnet-prior, plot output
 ######################################################################
 
@@ -308,7 +308,7 @@ if __name__ == '__main__':
     model_name =  "MLP_cr" 
     hp['hidden_layer_sizes'] = (hp['Nnodes'],)*hp['Nlayers']
     
-    batch_size = 256*72 #actual batch size
+    batch_size = 2048 #actual batch size
    
     dtbatch_size =  3 # number of time steps loaded at once (use 2-3 to avoid overfitting)
     epochs_per_dtbatch =  5# number of epochs before loading new training files
