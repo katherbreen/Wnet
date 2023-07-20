@@ -378,11 +378,9 @@ class GAN(keras.Model):
         g_z = self.generator(y, training = False)
         g_z = tf.where(x>0, g_z, 0) #filter for obs
         
-        # add a more meaninful metric before log transforming
-        g_obs_loss = tf.reduce_mean(mae(g_z, x)) 
-        
-        # the discriminator trains on log_sigW
-        g_z = g_z*(1-self.wh) + self.wh*x         
+        # add a more meaninful metric
+        g_obs_loss = tf.reduce_mean(mae(g_z, x))        
+       
         d_x = self.discriminator(tf.concat([x, y], 1),  training = False) #make it conditional #real output 
         d_gz = self.discriminator(tf.concat([g_z, y], 1), training = False) #fake output	     
         ones =  tf.ones_like(d_gz)
