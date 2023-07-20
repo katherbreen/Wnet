@@ -97,11 +97,11 @@ def build_wnet(hp):
     output =  layers.Dense(1)(x)
     model = keras.Model(input_dat, output)
     opt = tf.keras.optimizers.Adam(learning_rate=hp['lr'], amsgrad=True)
-    model.compile(loss=my_loss, optimizer=opt)
+    model.compile(loss=polyMSE, optimizer=opt)
 
     return model  
     
-def my_loss(ytrue,ypred):            
+def polyMSE(ytrue,ypred):            
     st =  2
     mx =  14
     x = tf.where(ypred > 1e-6, ypred, 0)  #use obs mask
@@ -118,7 +118,8 @@ def my_loss(ytrue,ypred):
     return  tf.reduce_mean(mse(m1, m2)) 
 
 
-#### CLASSES ####    
+#### CLASSES ####
+## Loads and stores data files for training and validation. 
 class get_dts():
    def __init__(self, ndts =  1, nam ="def",  exp_out=1, batch_size = 32000, subsample=5):  #creates a class that will handle ndsts files
     yr =  "Y2006/" 
@@ -187,7 +188,8 @@ class get_dts():
           self.regridder = xe.Regridder(self.dat_out, self.dat_in, 'bilinear', periodic=True) #make sure they are exactly the same grid 
           self.create_regridder =  False    #this is done bacause there is a bug in xesmf when two consecutive regridders are created on the fly 
       self.dat_out =  self.regridder(self.dat_out)
-           
+   
+      
    def get_Xy(self, make_y_array =  True,  batch_size  =5120, test = False, x_reshape =False):
    
         self.batch_size = batch_size
@@ -238,6 +240,7 @@ class get_dts():
         
 
 # Use dask generator for data stream ============ here we read data in batches of dtsbatch steps to save time 
+# Each chunk of the dask array is a minibatch
 class DaskGenerator(Sequence):
         def __init__(self, dts_gen, nepochs_dtbatch, dtbatch_size, batch_size):
             
