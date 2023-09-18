@@ -12,7 +12,7 @@ This repository contains four different Python scripts for calculating and plott
 
 This scrip uses data from G5NR, to train and neural network, "Wnet-prior" that reads predicts sigmaW from the meteorological state. Because the G5NR data set is too extensive to fit in memory, only a few half-hourly output files (3-5 files) are loaded at once for training a few epochs. Then a entire new set is loaded and so on. This behavior is controlled by the parameters dtbatch_size and epochs_per_dtbatch. For training always on the same files set epochs_per_dtbatch > number epochs. If only a single "time step" from G5NR is used for training set dtbatch_size = 1   
 
-Using dask, the training datasets are lazily loaded. A "dask-generator" is build to feed data for training, aligning each minibatch with the chunks of the dask array.  After training the script produces the weights of the neural network Wnet_prior.h5 and plots the loss functions. If test mode is enabled then the script tests Wnet_prior on set of randomly selected files and saves the results in Wnet_prio.nc 
+Using dask, the training datasets are lazily loaded. A "dask-generator" class feeds data for training, aligning each minibatch with the chunks of the dask array.  After training the script produces the weights of the neural network, Wnet_prior.h5, and plots the loss functions. If test mode is enabled, then the script tests Wnet_prior on a set of randomly selected files and saves the results in Wnet_prior.nc 
 
 ### 2. `filtered_velocity.py`
 
