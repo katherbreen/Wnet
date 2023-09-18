@@ -4,15 +4,15 @@
 
 ## Overview
 
-This repository contains four different Python scripts for calculating and plotting the standard deviation in vertical wind velocity (sigmaW), and to demonstrate the Constraining Adversarial Trainining method following Barahona et al. "Deep Learning Parameterization of Vertical Wind Velocity Variability via Constrained Adversarial Training (doi:tbd)". 
-
-These scripts are designed to work with gridded, netcdf data from observations, high resolution simulated output, and reanalysis data. Observartional and reanalysis data should represent time series of sigmaW and atmospheric state  at different vertical positions, respectively, while the simulated data is taken from the NAS GEOS-5 Nature Run (G5NR), https://gmao.gsfc.nasa.gov/global_mesoscale/7km-G5NR/data_access/. Other scripts provide various methods for computing and visualizing sigmaW.
+This repository contains four different Python scripts for calculating and plotting the standard deviation in vertical wind velocity (sigmaW), and to demonstrate the Constraining Adversarial Trainining method following Barahona et al. "Deep Learning Parameterization of Vertical Wind Velocity Variability via Constrained Adversarial Training (doi:tbd)". These scripts are designed to work with gridded, netcdf data from observations, high resolution simulated output, and reanalysis data. Observartional and reanalysis data should represent time series of sigmaW and atmospheric state  at different vertical positions, respectively, while the simulated data is taken from the NAS GEOS-5 Nature Run (G5NR), https://gmao.gsfc.nasa.gov/global_mesoscale/7km-G5NR/data_access/. Other scripts provide various methods for computing and visualizing sigmaW.
 
 ## Files
 
 ### 1. `Wnet_prior.py`
 
-This scrip uses data from G5NR, to train and neural network, "Wnet-prior" that reads predicts sigmaW from the meteorological state. Because the G5NR data set is too extensive to fit in memory, only a few half-hourly output files (3-5 files) are loaded at once for training a few epochs. Then a entire new set is loaded and so on. Using dask, the training datasets are lazily loaded. A "dask-generator" is build to feed data for training, aligning each minibatch with the chunks of the dask array.     
+This scrip uses data from G5NR, to train and neural network, "Wnet-prior" that reads predicts sigmaW from the meteorological state. Because the G5NR data set is too extensive to fit in memory, only a few half-hourly output files (3-5 files) are loaded at once for training a few epochs. Then a entire new set is loaded and so on. This behavior is controlled by the parameters dtbatch_size and epochs_per_dtbatch. For training always on the same files set epochs_per_dtbatch > number epochs. If only a single "time step" from G5NR is used for training set dtbatch_size = 1   
+
+Using dask, the training datasets are lazily loaded. A "dask-generator" is build to feed data for training, aligning each minibatch with the chunks of the dask array.  After training the script produces the weights of the neural network Wnet_prior.h5 and plots the loss functions. If test mode is enabled then the script tests Wnet_prior on set of randomly selected files and saves the results in Wnet_prio.nc 
 
 ### 2. `filtered_velocity.py`
 
