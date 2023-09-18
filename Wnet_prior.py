@@ -308,7 +308,7 @@ if __name__ == '__main__':
     print("====Num GPUs:", len(physical_devices))
     strategy = tf.distribute.MirroredStrategy()
     
-    model_name =  "MLP_cr" 
+    model_name =  "Wnet_prior" 
     hp['hidden_layer_sizes'] = (hp['Nnodes'],)*hp['Nlayers']
     
     batch_size = 2048 #actual batch size
