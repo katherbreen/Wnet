@@ -6,20 +6,13 @@
 
 This repository contains four different Python scripts for calculating and plotting the standard deviation in vertical wind velocity (sigmaW), and to demonstrate the Constraining Adversarial Trainining method following Barahona et al. "Deep Learning Parameterization of Vertical Wind Velocity Variability via Constrained Adversarial Training (doi:tbd)". 
 
-These scripts are designed to work with gridded, netcdf data from observations, high resolution simulated output, and reanalysis data. Observartional and reanalysis data should represent time series of sigmaW and atmospheric state  at different vertical positions, respectively, while the simulated data is taken from   https://gmao.gsfc.nasa.gov/global_mesoscale/7km-G5NR/data_access/. Other scripts provide various methods for computing and visualizing sigmaW.
+These scripts are designed to work with gridded, netcdf data from observations, high resolution simulated output, and reanalysis data. Observartional and reanalysis data should represent time series of sigmaW and atmospheric state  at different vertical positions, respectively, while the simulated data is taken from the NAS GEOS-5 Nature Run (G5NR), https://gmao.gsfc.nasa.gov/global_mesoscale/7km-G5NR/data_access/. Other scripts provide various methods for computing and visualizing sigmaW.
 
 ## Files
 
-### 1. `simple_velocity.py`
+### 1. `Wnet_prior.py`
 
-This script calculates vertical velocity by taking the finite difference between consecutive vertical positions. It provides a simple and straightforward way to estimate velocity but may be sensitive to noise in the data. To use this script:
-
-```bash
-python simple_velocity.py input_file.csv output_file.csv
-```
-
-- `input_file.csv`: A CSV file containing time and vertical position data.
-- `output_file.csv`: A CSV file where the calculated vertical velocity will be saved.
+This scrip uses data from G5NR, to train and neural network, "Wnet-prior" that reads predicts sigmaW from the meteorological state. Because the G5NR data set is too extensive to fit in memory, only a few half-hourly output files (3-5 files) are loaded at once for training a few epochs. Then a entire new set is loaded and so on. Using dask, the training datasets are lazily loaded. A "dask-generator" is build to feed data for training, aligning each minibatch with the chunks of the dask array.     
 
 ### 2. `filtered_velocity.py`
 
