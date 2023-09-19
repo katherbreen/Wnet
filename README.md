@@ -20,16 +20,10 @@ Using dask, the training datasets are lazily loaded. A "dask-generator" class fe
 This script refines the predictions of the Wnet_prior neural network using conditinonal generative adversarial training. Wnet_prior acts sa the generator and a second NN is build to act as the discriminator. A GAN class and custom training loop are build to set the adversarial training. The data used to train the networks consist of time series of sigmaW collected from ground stations around the world and reanalysis data (MERRA-2, https://gmao.gsfc.nasa.gov/reanalysis/MERRA-2/) collocacted in time and space with the observations. Sample data for two representative sites can be found in the data directory. After training the generator and discriminator weights are saved, and the losses plotted; best_generator.h5 constitutes the weights of the Wnet parameterization.  
 
 
-### 3. `acceleration_velocity.py`
+### 3. `BoxPlots.py`
 
-This script calculates vertical velocity by integrating vertical acceleration data. It first computes acceleration by taking the derivative of vertical velocity and then integrates it to obtain velocity. This approach can be useful when you have accurate acceleration measurements. To use this script:
+This script creates box plots comparing predictions from different models at ground sites against observations. Representative data to run thew script as well as the latest versions of the different NN models cand be found in the 'data' directory.  
 
-```bash
-python acceleration_velocity.py input_file.csv output_file.csv
-```
-
-- `input_file.csv`: A CSV file containing time and vertical acceleration data.
-- `output_file.csv`: A CSV file where the calculated vertical velocity will be saved.
 
 ### 4. `plot_velocity.py`
 
