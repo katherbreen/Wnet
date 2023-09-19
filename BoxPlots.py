@@ -87,6 +87,7 @@ def get_data(site=  '', chunk_size = 512*72, test =  False):
     dat =  dat.fillna(0)
     dat_obs =  dat_obs.fillna(0)     
 
+    ## get the last 15% of the data for testing
     tim = dat['time']
     tx = int(0.85*len(tim.values))
     test_dates =  tim[tx:]
@@ -95,6 +96,7 @@ def get_data(site=  '', chunk_size = 512*72, test =  False):
     dat =  dat.sel (time  = test_dates)      
     dat_obs = dat_obs.sel (time  = test_dates) 
 
+    ## Standardize
     feat_in= xr.map_blocks(standardize, dat, template=dat)
     
     Xall =  feat_in
