@@ -14,16 +14,10 @@ This scrip uses data from G5NR, to train and neural network, "Wnet-prior" that r
 
 Using dask, the training datasets are lazily loaded. A "dask-generator" class feeds data for training, aligning each minibatch with the chunks of the dask array.  After training the script produces the weights of the neural network, Wnet_prior.h5, and plots the loss functions. If test mode is enabled, then the script tests Wnet_prior on a set of randomly selected files and saves the results in Wnet_prior.nc 
 
-### 2. `filtered_velocity.py`
+### 2. `Wnet_GAN.py`
 
-This script uses a low-pass filter to smooth the vertical position data before calculating velocity. Smoothing helps reduce noise and provides a more stable estimate of velocity. To use this script:
+This script refines the predictions of the Wnet_prior neural network using conditinonal generative adversarial training. Wnet_prior acts sa the generator and a second NN is build to act as the discriminator. A GAN class and custom training loop are build to set the adversarial training. The data used to train the networks consist of time series of sigmaW collected from ground stations around the world and reanalysis data (MERRA-2, https://gmao.gsfc.nasa.gov/reanalysis/MERRA-2/) collocacted in time and space with the observations.   
 
-```bash
-python filtered_velocity.py input_file.csv output_file.csv
-```
-
-- `input_file.csv`: A CSV file containing time and vertical position data.
-- `output_file.csv`: A CSV file where the calculated filtered vertical velocity will be saved.
 
 ### 3. `acceleration_velocity.py`
 
