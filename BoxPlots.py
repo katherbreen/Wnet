@@ -199,7 +199,6 @@ if __name__ == '__main__':
     yearsFmt = mdates.DateFormatter('%Y-%m') 
     
     axn =  0 
-    nexp =0.75
     SMALL_SIZE = 9
     MEDIUM_SIZE = 12
     BIGGER_SIZE = 14
