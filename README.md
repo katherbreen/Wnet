@@ -10,13 +10,14 @@ This repository contains four different Python scripts for calculating and plott
 
 ### 1. `Wnet_prior.py`
 
-This scrip uses data from G5NR, to train and neural network, "Wnet-prior" that reads predicts sigmaW from the meteorological state. Because the G5NR data set is too extensive to fit in memory, only a few half-hourly output files (3-5 files) are loaded at once for training a few epochs. Then a entire new set is loaded and so on. This behavior is controlled by the parameters dtbatch_size and epochs_per_dtbatch. For training always on the same files set epochs_per_dtbatch > number epochs. If only a single "time step" from G5NR is used for training set dtbatch_size = 1   
+This scrip uses data from G5NR, to train and neural network, "Wnet-prior" that reads predicts sigmaW from the meteorological state. Because the G5NR data set is too extensive to fit in memory, only a few half-hourly output files (3-5 files) are loaded at once for training a few epochs. Then a entire new set is loaded and so on. This behavior is controlled by the parameters dtbatch_size and epochs_per_dtbatch. For training always on the same files set epochs_per_dtbatch > number epochs. If only a single "time step" from G5NR is used for training set dtbatch_size = 1. The weights for the latest of Wnet-prior can be found in the 'data' directory.   
 
-Using dask, the training datasets are lazily loaded. A "dask-generator" class feeds data for training, aligning each minibatch with the chunks of the dask array.  After training the script produces the weights of the neural network, Wnet_prior.h5, and plots the loss functions. If test mode is enabled, then the script tests Wnet_prior on a set of randomly selected files and saves the results in Wnet_prior.nc 
+Using dask, the training datasets are lazily loaded. A "dask-generator" class feeds data for training, aligning each minibatch with the chunks of the dask array.  After training the script produces the weights of the neural network, Wnet_prior.h5, and plots the loss functions. If test mode is enabled, then the script tests Wnet_prior on a set of randomly selected files and saves the results in Wnet_prior.nc.
+
 
 ### 2. `Wnet_GAN.py`
 
-This script refines the predictions of the Wnet_prior neural network using conditinonal generative adversarial training. Wnet_prior acts sa the generator and a second NN is build to act as the discriminator. A GAN class and custom training loop are build to set the adversarial training. The data used to train the networks consist of time series of sigmaW collected from ground stations around the world and reanalysis data (MERRA-2, https://gmao.gsfc.nasa.gov/reanalysis/MERRA-2/) collocacted in time and space with the observations.   
+This script refines the predictions of the Wnet_prior neural network using conditinonal generative adversarial training. Wnet_prior acts sa the generator and a second NN is build to act as the discriminator. A GAN class and custom training loop are build to set the adversarial training. The data used to train the networks consist of time series of sigmaW collected from ground stations around the world and reanalysis data (MERRA-2, https://gmao.gsfc.nasa.gov/reanalysis/MERRA-2/) collocacted in time and space with the observations. Sample data for two representative sites can be found in the data directory. After training the generator and discriminator weights are saved, and the losses plotted; best_generator.h5 constitutes the weights of the Wnet parameterization.  
 
 
 ### 3. `acceleration_velocity.py`
